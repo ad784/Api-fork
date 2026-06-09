@@ -2,11 +2,11 @@
 
 API REST feita com Node.js, Express e MongoDB para gerenciar um catálogo de produtos com atributos dinâmicos. Trabalho da disciplina de desenvolvimento back-end.
 
-## Tecnologias
-
-- Node.js + Express
-- MongoDB + Mongoose
-- JWT para autenticação
+## Tecnologias utilizadas
+* **Runtime:** [Node.js](https://nodejs.org/)
+* **Framework Web:** [Express](https://expressjs.com/)
+* **Banco de Dados:** [MongoDB](https://www.mongodb.com/) 
+* **Segurança:** [JSON Web Tokens (JWT)](https://jwt.io/) & [Bcrypt](https://www.npmjs.com/package/bcrypt)
 - bcryptjs para hash de senhas
 - helmet, express-mongo-sanitize, express-rate-limit para segurança
 
