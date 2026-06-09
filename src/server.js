@@ -13,10 +13,19 @@ const app = express();
 app.use(express.json());
 app.use(mongoSanitize());
 
-// rota da documentação
+app.get('/', (req, res) => {
+  res.json({
+    message: 'API Catalogo de Produtos rodando',
+    endpoints: {
+      auth: '/auth',
+      products: '/products',
+      swagger: '/api-docs'
+    }
+  });
+});
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
-// rotas da aplicação
 app.use('/auth', authRoutes);
 app.use('/products', productRoutes);
 

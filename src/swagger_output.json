@@ -2,8 +2,13 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Catálogo de Produtos API",
-    "description": "API REST para gerenciamento de um catálogo de produtos com autenticação JWT.",
-    "version": "1.0.0"
+    "description": "API REST para gerenciamento de catálogo de produtos com autenticação JWT e documentação Swagger.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Ad784",
+      "url": "https://github.com/ad784",
+      "email": "contato@exemplo.com"
+    }
   },
   "servers": [
     {
@@ -12,254 +17,240 @@
     }
   ],
   "tags": [
-    { "name": "Auth", "description": "Endpoints de autenticação" },
-    { "name": "Produtos", "description": "CRUD completo do catálogo de produtos" }
+    {
+      "name": "Auth",
+      "description": "Endpoints de autenticação"
+    },
+    {
+      "name": "Produtos",
+      "description": "CRUD de produtos do catálogo"
+    }
   ],
+  "paths": {
+    "/login": {
+      "post": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "example": "any"
+                  },
+                  "password": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/logout": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "categoria",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    }
+  },
   "components": {
     "securitySchemes": {
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "JWT"
-      }
-    },
-    "schemas": {
-      "Produto": {
-        "type": "object",
-        "properties": {
-          "_id":       { "type": "string",  "example": "6473b5f1c2a4e800123abcde" },
-          "nome":      { "type": "string",  "example": "Notebook Gamer" },
-          "descricao": { "type": "string",  "example": "Notebook com RTX 4060" },
-          "preco":     { "type": "number",  "example": 4999.90 },
-          "categoria": { "type": "string",  "example": "eletrônicos" },
-          "estoque":   { "type": "integer", "example": 15 }
-        }
-      },
-      "ProdutoInput": {
-        "type": "object",
-        "required": ["nome", "preco"],
-        "properties": {
-          "nome":      { "type": "string",  "example": "Notebook Gamer" },
-          "descricao": { "type": "string",  "example": "Notebook com RTX 4060" },
-          "preco":     { "type": "number",  "example": 4999.90 },
-          "categoria": { "type": "string",  "example": "eletrônicos" },
-          "estoque":   { "type": "integer", "example": 15 }
-        }
-      },
-      "Erro": {
-        "type": "object",
-        "properties": {
-          "erro": { "type": "string", "example": "Mensagem de erro" }
-        }
-      }
-    }
-  },
-  "paths": {
-    "/auth/login": {
-      "post": {
-        "tags": ["Auth"],
-        "summary": "Login do usuário",
-        "description": "Autentica o usuário com username e password. Retorna um token JWT válido por 1 dia.",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["username", "password"],
-                "properties": {
-                  "username": { "type": "string", "example": "admin" },
-                  "password": { "type": "string", "example": "senha123" }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Login bem-sucedido. Retorna o token JWT.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "token": { "type": "string", "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." }
-                  }
-                }
-              }
-            }
-          },
-          "400": { "description": "Campos obrigatórios não enviados.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Erro" } } } },
-          "401": { "description": "Credenciais inválidas.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Erro" } } } }
-        }
-      }
-    },
-    "/auth/logout": {
-      "post": {
-        "tags": ["Auth"],
-        "summary": "Logout do usuário",
-        "description": "Invalida o token JWT atual, adicionando-o à blacklist.",
-        "security": [{ "bearerAuth": [] }],
-        "responses": {
-          "200": {
-            "description": "Logout realizado com sucesso.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "mensagem": { "type": "string", "example": "Logout realizado com sucesso" }
-                  }
-                }
-              }
-            }
-          },
-          "401": { "description": "Token não fornecido ou inválido.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Erro" } } } }
-        }
-      }
-    },
-    "/products": {
-      "get": {
-        "tags": ["Produtos"],
-        "summary": "Listar todos os produtos",
-        "description": "Retorna todos os produtos cadastrados. Aceita filtro opcional por categoria via query string.",
-        "security": [{ "bearerAuth": [] }],
-        "parameters": [
-          {
-            "name": "categoria",
-            "in": "query",
-            "description": "Filtrar produtos por categoria",
-            "required": false,
-            "schema": { "type": "string", "example": "eletrônicos" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Lista de produtos retornada com sucesso.",
-            "content": {
-              "application/json": {
-                "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Produto" } }
-              }
-            }
-          },
-          "401": { "description": "Token não fornecido ou inválido.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Erro" } } } }
-        }
-      },
-      "post": {
-        "tags": ["Produtos"],
-        "summary": "Criar novo produto",
-        "description": "Cadastra um novo produto no catálogo. Campos obrigatórios: nome e preco.",
-        "security": [{ "bearerAuth": [] }],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/ProdutoInput" }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Produto criado com sucesso.",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Produto" } } }
-          },
-          "400": { "description": "Dados inválidos ou campos obrigatórios ausentes.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Erro" } } } },
-          "401": { "description": "Token não fornecido ou inválido.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Erro" } } } }
-        }
-      }
-    },
-    "/products/{id}": {
-      "get": {
-        "tags": ["Produtos"],
-        "summary": "Buscar produto por ID",
-        "description": "Retorna um único produto pelo seu ID do MongoDB (ObjectId).",
-        "security": [{ "bearerAuth": [] }],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "ID do produto (MongoDB ObjectId)",
-            "schema": { "type": "string", "example": "6473b5f1c2a4e800123abcde" }
-          }
-        ],
-        "responses": {
-          "200": { "description": "Produto encontrado.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Produto" } } } },
-          "400": { "description": "ID com formato inválido.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Erro" } } } },
-          "401": { "description": "Token não fornecido ou inválido.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Erro" } } } },
-          "404": { "description": "Produto não encontrado.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Erro" } } } }
-        }
-      },
-      "put": {
-        "tags": ["Produtos"],
-        "summary": "Atualizar produto",
-        "description": "Atualiza os dados de um produto existente. Envie somente os campos que deseja alterar.",
-        "security": [{ "bearerAuth": [] }],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "ID do produto",
-            "schema": { "type": "string", "example": "6473b5f1c2a4e800123abcde" }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "nome":      { "type": "string",  "example": "Notebook Gamer Pro" },
-                  "descricao": { "type": "string",  "example": "Versão atualizada com mais RAM" },
-                  "preco":     { "type": "number",  "example": 5499.90 },
-                  "categoria": { "type": "string",  "example": "eletrônicos" },
-                  "estoque":   { "type": "integer", "example": 8 }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": { "description": "Produto atualizado com sucesso.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Produto" } } } },
-          "400": { "description": "Dados inválidos ou ID com formato inválido.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Erro" } } } },
-          "401": { "description": "Token não fornecido ou inválido.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Erro" } } } },
-          "404": { "description": "Produto não encontrado.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Erro" } } } }
-        }
-      },
-      "delete": {
-        "tags": ["Produtos"],
-        "summary": "Remover produto",
-        "description": "Remove permanentemente um produto do catálogo pelo seu ID.",
-        "security": [{ "bearerAuth": [] }],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "ID do produto",
-            "schema": { "type": "string", "example": "6473b5f1c2a4e800123abcde" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Produto removido com sucesso.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "mensagem": { "type": "string", "example": "Produto removido com sucesso" }
-                  }
-                }
-              }
-            }
-          },
-          "400": { "description": "ID com formato inválido.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Erro" } } } },
-          "401": { "description": "Token não fornecido ou inválido.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Erro" } } } },
-          "404": { "description": "Produto não encontrado.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Erro" } } } }
-        }
       }
     }
   }

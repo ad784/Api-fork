@@ -3,8 +3,13 @@ const swaggerAutogen = require('swagger-autogen')({ openapi: '3.0.0' });
 const doc = {
   info: {
     title: 'Catálogo de Produtos API',
-    description: 'API REST para gerenciamento de um catálogo de produtos com autenticação JWT.',
+    description: 'API REST para gerenciamento de catálogo de produtos com autenticação JWT e documentação Swagger.',
     version: '1.0.0',
+    contact: {
+      name: 'Ad784',
+      url: 'https://github.com/ad784',
+      email: 'contato@exemplo.com',
+    },
   },
   servers: [
     {
