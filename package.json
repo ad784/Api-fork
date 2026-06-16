@@ -1,6 +1,6 @@
 {
   "name": "api-catalogo-produtos",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "api de catalogo de produtos - trabalho faculdade",
   "main": "src/server.js",
   "scripts": {
