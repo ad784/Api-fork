@@ -1,0 +1,87 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Catálogo de Produtos",
+    "version": "2.0.1",
+    "description": "Spec mínima gerada automaticamente"
+  },
+  "paths": {
+    "/api/status": {
+      "get": {
+        "summary": "Status da API",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/versao": {
+      "get": {
+        "summary": "Versão da API",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/v1/auth/register": {
+      "post": {
+        "summary": "Registrar usuário",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": { "type": "string" },
+                  "email": { "type": "string" },
+                  "senha": { "type": "string" }
+                },
+                "required": ["nome","email","senha"]
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "summary": "Login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" },
+                  "senha": { "type": "string" }
+                },
+                "required": ["email","senha"]
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/categorias": {
+      "get": {
+        "summary": "Listar categorias",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "summary": "Criar categoria (protegido)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": { "nome": { "type": "string" } },
+                "required": ["nome"]
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Created" } }
+      }
+    }
+  }
+}

@@ -7,6 +7,7 @@ const authRoutes = require('./routes/authRoutes')
 const apiRoutes = require('./routes/apiRoutes')
 const categoriaRoutes = require('./routes/categoriaRoutes')
 const errorHandler = require('./middlewares/errorHandler')
+const swaggerDocument = require('./docs/swagger.json')
 
 const app = express()
 
@@ -28,6 +29,10 @@ app.use('/api/v1/categorias', categoriaRoutes)
 
 app.get('/', (req, res) => {
   res.json({ status: 'success', message: 'API Catálogo de Produtos rodando' })
+})
+
+app.get('/api-docs', (req, res) => {
+  res.json(swaggerDocument)
 })
 
 app.all('*', (req, res) => {
