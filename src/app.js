@@ -26,6 +26,10 @@ app.use('/api/v1/auth', authRoutes)
 app.use('/api/categorias', categoriaRoutes)
 app.use('/api/v1/categorias', categoriaRoutes)
 
+app.get('/', (req, res) => {
+  res.json({ status: 'success', message: 'API Catálogo de Produtos rodando' })
+})
+
 app.all('*', (req, res) => {
   res.status(404).json({ status: 'error', message: `rota ${req.originalUrl} nao existe` })
 })
