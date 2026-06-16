@@ -8,6 +8,7 @@ const apiRoutes = require('./routes/apiRoutes')
 const categoriaRoutes = require('./routes/categoriaRoutes')
 const errorHandler = require('./middlewares/errorHandler')
 const swaggerDocument = require('./docs/swagger.json')
+const swaggerUi = require('swagger-ui-express')
 
 const app = express()
 
@@ -31,9 +32,12 @@ app.get('/', (req, res) => {
   res.json({ status: 'success', message: 'API Catálogo de Produtos rodando' })
 })
 
-app.get('/api-docs', (req, res) => {
+// serve raw JSON at /api-docs.json and interactive UI at /api-docs
+app.get('/api-docs.json', (req, res) => {
   res.json(swaggerDocument)
 })
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 app.all('*', (req, res) => {
   res.status(404).json({ status: 'error', message: `rota ${req.originalUrl} nao existe` })
