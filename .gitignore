@@ -1,4 +1,5 @@
 node_modules/
 .env
-mongo-data/
-mongo-log/
+.mysql-data/
+*.log
+.DS_Store

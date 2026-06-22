@@ -1,111 +1,116 @@
-﻿# Catalogo de Produtos API
+# API Catálogo de Produtos
 
-Uma API RESTful em **Node.js** e **Express** para gerenciamento de catalogo de produtos com **autenticacao JWT**, **persistencia MongoDB** e **documentacao Swagger**.
+API REST feita com Node.js, Express e MongoDB para gerenciar um catálogo de produtos com atributos dinâmicos. Trabalho da disciplina de desenvolvimento back-end.
 
 ## Tecnologias utilizadas
+* **Runtime:** [Node.js](https://nodejs.org/)
+* **Framework Web:** [Express](https://expressjs.com/)
+* **Banco de Dados:** [MongoDB](https://www.mongodb.com/) 
+* **Segurança:** [JSON Web Tokens (JWT)](https://jwt.io/) & [Bcrypt](https://www.npmjs.com/package/bcrypt)
+- bcryptjs para hash de senhas
+- helmet, express-mongo-sanitize, express-rate-limit para segurança
 
-- Node.js
-- Express
-- MongoDB
-- Mongoose
-- JSON Web Token (JWT)
-- Swagger UI
-- dotenv
-- bcryptjs
+## Como rodar
 
-## Funcionalidades
-
-- Autenticacao com JWT
-- Rotas protegidas via middleware
-- CRUD de produtos
-- Documentacao interativa em Swagger
-- Sanitizacao de dados com `express-mongo-sanitize`
-
-## Requisitos
-
-- Node.js 18+
-- MongoDB em execucao local ou remota
-- Git
-
-## Estrutura do projeto
-
-- `src/server.js` - inicializacao do servidor e configuracao das rotas
-- `src/config/swagger.js` - geracao de documentacao Swagger
-- `src/routes/authRoutes.js` - rotas de autenticacao
-- `src/routes/productRoutes.js` - rotas de produtos
-- `src/models` - modelos Mongoose
-- `src/controllers` - logica de negocios
-- `src/middlewares` - middlewares de autenticacao
-
-## Instalacao e execucao
-
-1. Entre na pasta do projeto:
+**Requisitos:** Node.js >= 18 e MongoDB rodando (local ou Atlas)
 
 ```bash
-cd projeto
-```
+# clonar o repositório
+git clone https://github.com/seu-usuario/api-catalogo-produtos.git
+cd api-catalogo-produtos
 
-2. Instale as dependencias:
-
-```bash
+# instalar dependências
 npm install
-```
 
-3. Crie um arquivo `.env` a partir do modelo:
+# configurar variáveis de ambiente
+cp .env.example .env
+# editar o .env com suas configurações
 
-```bash
-copy .env.example .env
-```
-
-4. Edite `.env` caso necessario:
-
-```env
-PORT=3000
-MONGO_URI=mongodb://localhost:27017/catalogo
-JWT_SECRET=SeuSegredoJWT
-```
-
-5. Inicie o servidor em modo de desenvolvimento:
-
-```bash
+# rodar em desenvolvimento
 npm run dev
 ```
 
-6. Acesse a API:
+## Variáveis de ambiente
 
-- `http://localhost:3000/`
-- `http://localhost:3000/api-docs`
+Renomeie o `.env.example` para `.env` e preencha:
 
-## Documentacao Swagger
-
-A documentacao interativa esta disponivel em:
-
-- `http://localhost:3000/api-docs`
-
-Para atualizar o arquivo de documentacao Swagger, execute:
-
-```bash
-npm run swagger
+```
+PORT=3000
+MONGO_URI=mongodb://localhost:27017/catalogo_db
+JWT_SECRET=qualquer_string_secreta_aqui
+JWT_EXPIRES_IN=7d
 ```
 
-## Endpoints principais
+## Endpoints
 
-- `POST /auth/login`
-- `POST /auth/logout`
-- `GET /products`
-- `GET /products/:id`
-- `POST /products`
-- `PUT /products/:id`
-- `DELETE /products/:id`
+### Autenticação
 
-> Observacao: as rotas de produtos exigem token JWT valido no cabecalho `Authorization: Bearer <token>`.
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| POST | /api/v1/auth/register | cria conta |
+| POST | /api/v1/auth/login | faz login e retorna token |
+| GET | /api/v1/auth/me | retorna dados do usuário logado |
 
-## Notas
+### Produtos
 
-- A aplicacao utiliza MongoDB e nao MySQL.
-- O Swagger foi configurado para exibir os endpoints de autenticacao e produtos.
-- Se preferir, mantenha o MongoDB local automatizado com um servico ou inicie o `mongod` manualmente com `--dbpath`.
+| Método | Rota | Auth | Descrição |
+|--------|------|------|-----------|
+| GET | /api/v1/products | não | lista produtos |
+| GET | /api/v1/products/:id | não | busca por id |
+| POST | /api/v1/products | sim | cria produto |
+| PUT | /api/v1/products/:id | sim | atualiza produto |
+| DELETE | /api/v1/products/:id | admin | remove produto |
 
-## Repositorio
+Rotas autenticadas precisam do header:
+```
+Authorization: Bearer <token>
+```
 
+### Filtros no GET /products
+
+- `?category=eletronicos`
+- `?minPrice=100&maxPrice=500`
+- `?search=notebook`
+- `?page=1&limit=10`
+
+## Exemplo de uso
+
+**Criar conta:**
+```json
+POST /api/v1/auth/register
+{
+  "name": "João",
+  "email": "joao@email.com",
+  "password": "123456"
+}
+```
+
+**Criar produto:**
+```json
+POST /api/v1/products
+{
+  "name": "Notebook Dell",
+  "price": 3500,
+  "category": "eletronicos",
+  "stock": 10,
+  "tags": ["notebook", "dell"],
+  "attributes": {
+    "ram": "8GB",
+    "processador": "i5"
+  }
+}
+```
+
+## Estrutura
+
+```
+src/
+  config/       → conexão com banco
+  controllers/  → lógica das rotas
+  middlewares/  → autenticação e erros
+  models/       → schemas do mongoose
+  routes/       → definição das rotas
+  app.js
+  server.js
+```
 https://github.com/ad784/Api-rest-cat-podrutos.git

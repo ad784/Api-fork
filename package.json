@@ -1,24 +1,30 @@
 {
-  "name": "catalogo-produtos",
-  "version": "1.0.0",
-  "description": "API REST - Catálogo de Produtos",
+  "name": "api-catalogo-produtos",
+  "version": "2.0.1",
+  "description": "api de catalogo de produtos - trabalho faculdade",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "swagger": "node src/config/swagger.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "dotenv": "^16.0.3",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "jsonwebtoken": "^9.0.0",
-    "mongoose": "^7.3.1",
     "express-mongo-sanitize": "^2.2.0",
-    "swagger-autogen": "^2.23.5",
-    "swagger-ui-express": "^5.0.0"
+    "express-rate-limit": "^7.1.5",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.0.3",
+    "mysql2": "^3.11.5",
+    "swagger-ui-express": "^5.0.1",
+    "validator": "^13.11.0"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.2"
   }
 }

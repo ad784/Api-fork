@@ -1,32 +1,55 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
-const productSchema = new mongoose.Schema(
-  {
-    nome: {
-      type: String,
-      required: [true, 'Nome é obrigatório'],
-      trim: true,
-    },
-    descricao: {
-      type: String,
-      trim: true,
-    },
-    preco: {
-      type: Number,
-      required: [true, 'Preço é obrigatório'],
-      min: [0, 'Preço não pode ser negativo'],
-    },
-    categoria: {
-      type: String,
-      trim: true,
-    },
-    estoque: {
-      type: Number,
-      default: 0,
-      min: 0,
-    },
+const productSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, 'nome do produto obrigatorio'],
+    trim: true,
+    minlength: 2,
+    maxlength: 200
   },
-  { timestamps: true }
-);
+  description: {
+    type: String,
+    trim: true,
+    maxlength: 2000
+  },
+  price: {
+    type: Number,
+    required: [true, 'preco obrigatorio'],
+    min: [0, 'preco nao pode ser negativo']
+  },
+  category: {
+    type: String,
+    required: [true, 'categoria obrigatoria'],
+    trim: true,
+    lowercase: true
+  },
+  stock: {
+    type: Number,
+    default: 0,
+    min: 0
+  },
+  isActive: {
+    type: Boolean,
+    default: true
+  },
+  attributes: {
+    type: Map,
+    of: String,
+    default: {}
+  },
+  tags: {
+    type: [String],
+    default: []
+  },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  }
+}, { timestamps: true })
 
-module.exports = mongoose.model('Product', productSchema);
+productSchema.index({ name: 'text', description: 'text', tags: 'text' })
+productSchema.index({ category: 1, isActive: 1 })
+
+module.exports = mongoose.model('Product', productSchema)
